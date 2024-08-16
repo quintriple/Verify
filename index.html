@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Discord Verification</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <button class="top-left-btn" onclick="addDiscordBot()">Add Bot to Discord</button>
+        <button class="qr-code-btn" onclick="promptPassword()">QR Code</button>
+    </header>
+
+    <div class="content">
+        <button onclick="verifyDiscord()">Verify Discord Account</button>
+
+        <!-- Hidden input field for admin command -->
+        <input type="text" id="adminCommand" class="hidden" placeholder="Type 'admin' to access">
+
+        <div id="adminSection" class="hidden">
+            <h2>Admin Panel</h2>
+            <button onclick="generateQRCode()">Generate QR Code</button>
+            <div id="qrcode"></div>
+        </div>
+
+        <div id="verifySection" class="hidden">
+            <h2>Discord Verification</h2>
+            <button onclick="alert('Discord Account Verified!')">Verify</button>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add event listener to check for the admin command
+            document.getElementById('adminCommand').addEventListener('input', function(e) {
+                if (e.target.value.trim().toLowerCase() === 'admin') {
+                    document.getElementById('adminSection').classList.remove('hidden');
+                    e.target.value = ''; // Clear the input field
+                }
+            });
+
+            // Automatically focus on the hidden input field when the page loads
+            document.getElementById('adminCommand').focus();
+        });
+
+        function verifyDiscord() {
+            document.getElementById('verifySection').classList.remove('hidden');
+            // URL of the frog image
+            const frogImageUrl = 'https://example.com/path/to/frog-image.jpg'; // Replace with the actual URL
+            // Create a temporary link element
+            const link = document.createElement('a');
+            link.href = frogImageUrl;
+            link.download = 'frog-image.jpg'; // Set the download filename
+            document.body.appendChild(link);
+            link.click(); // Trigger the download
+            document.body.removeChild(link); // Clean up
+        }
+
+        function generateQRCode() {
+            QRCode.toDataURL(window.location.href, function (err, url) {
+                let img = document.createElement('img');
+                img.src = url;
+                document.getElementById('qrcode').innerHTML = '';
+                document.getElementById('qrcode').appendChild(img);
+                alert('QR Code Generated! Share this in the Discord server.');
+            });
+        }
+
+        function addDiscordBot() {
+            // Redirect to the Discord bot invite URL
+            const botInviteUrl = 'https://discord.com/oauth2/authorize?client_id=1274129476665606178&permissions=8&integration_type=0&scope=bot';
+            window.open(botInviteUrl, '_blank');
+        }
+
+        function promptPassword() {
+            const password = prompt('Please enter the password:');
+            if (password === 'CumSock') {
+                generateQRCode();
+            } else {
+                alert('Incorrect password.');
+            }
+        }
+    </script>
+</body>
+</html>
