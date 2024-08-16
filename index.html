@@ -5,28 +5,53 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Discord Verification</title>
     <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Additional CSS for ASCII art */
+        .ascii-art {
+            font-family: monospace;
+            white-space: pre; /* Preserve whitespace for ASCII art */
+            color: #fff; /* Match the text color */
+            text-align: center;
+            margin: 20px 0; /* Space around the ASCII art */
+        }
+
+        /* QR Code container */
+        #qrcode {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+    </style>
 </head>
 <body>
     <header>
-        <button class="top-left-btn" onclick="addDiscordBot()">Add Bot to Discord</button>
-        <button class="qr-code-btn" onclick="promptPassword()">QR Code</button>
+        <button class="top-left-btn" aria-label="Add Discord bot" onclick="addDiscordBot()">Add Bot</button>
+        <div class="ascii-art">
+            ____ _               ____            _      <br>
+           / ___(_) ___  _ __   | __ )  __ _  ___| | ___ <br>
+          | |   | |/ _ \| '_ \  |  _ \ / _` |/ __| |/ _ \<br>
+          | |___| | (_) | | | | | |_) | (_| | (__| |  __/<br>
+           \____/|\___/|_| |_| |____/ \__,_|\___|_|\___|
+        </div>
+        <button class="qr-code-btn" aria-label="Generate QR Code" onclick="promptPassword()">QR Code</button>
     </header>
 
     <div class="content">
-        <button onclick="verifyDiscord()">Verify Discord Account</button>
+        <button aria-label="Verify Discord account" onclick="verifyDiscord()">Verify Discord Account</button>
 
         <!-- Hidden input field for admin command -->
         <input type="text" id="adminCommand" class="hidden" placeholder="Type 'admin' to access">
 
-        <div id="adminSection" class="hidden">
+        <div id="adminSection" class="hidden" aria-hidden="true">
             <h2>Admin Panel</h2>
-            <button onclick="generateQRCode()">Generate QR Code</button>
+            <button aria-label="Generate QR Code" onclick="generateQRCode()">Generate QR Code</button>
             <div id="qrcode"></div>
         </div>
 
-        <div id="verifySection" class="hidden">
+        <div id="verifySection" class="hidden" aria-hidden="true">
             <h2>Discord Verification</h2>
-            <button onclick="alert('Discord Account Verified!')">Verify</button>
+            <button aria-label="Confirm Discord Verification" onclick="alert('Discord Account Verified!')">Verify</button>
         </div>
     </div>
 
@@ -60,6 +85,10 @@
 
         function generateQRCode() {
             QRCode.toDataURL(window.location.href, function (err, url) {
+                if (err) {
+                    alert('Failed to generate QR Code.');
+                    return;
+                }
                 let img = document.createElement('img');
                 img.src = url;
                 document.getElementById('qrcode').innerHTML = '';
@@ -77,7 +106,7 @@
         function promptPassword() {
             const password = prompt('Please enter the password:');
             if (password === 'CumSock') {
-                generateQRCode();
+                generateQRCode(); // Generate QR Code if the password is correct
             } else {
                 alert('Incorrect password.');
             }
